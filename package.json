@@ -1,0 +1,56 @@
+{
+  "name": "rollup-plugin-solid",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js",
+    "node": "./dist/index.cjs",
+    "default": "./dist/index.cjs",
+    "require": "./dist/index.cjs"
+  },
+  "keywords": [
+    "rollup",
+    "rollup plugin",
+    "rollup-plugin",
+    "solid"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "pnpm run build --watch",
+    "update-version": "tsx scripts/update-version.ts",
+    "publish-script": "tsx scripts/publish-script.ts",
+    "cz": "bcz"
+  },
+  "author": "baicie",
+  "license": "MIT",
+  "devDependencies": {
+    "@baicie/commitizen": "^0.1.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^20.11.4",
+    "rollup": "^4.9.5",
+    "solid-js": "^1.8.11",
+    "tsup": "^8.0.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.14.0",
+  "peerDependencies": {
+    "rollup": "^4.9.5",
+    "solid-js": "^1.8.11"
+  },
+  "dependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/preset-typescript": "^7.23.3",
+    "@rollup/pluginutils": "^5.1.0",
+    "babel-preset-solid": "^1.8.9",
+    "merge-anything": "^5.1.7"
+  }
+}
