@@ -4,15 +4,7 @@ import type { FilterPattern } from '@rollup/pluginutils';
 import { createFilter } from '@rollup/pluginutils';
 import solid from 'babel-preset-solid';
 import { mergeAndConcat } from 'merge-anything';
-import fs from 'node:fs';
-import { createRequire } from 'node:module';
 import type { Plugin } from 'rollup';
-
-const require = createRequire(import.meta.url);
-
-const runtimePublicPath = '/@solid-refresh';
-const runtimeFilePath = require.resolve('solid-refresh/dist/solid-refresh.mjs');
-const runtimeCode = fs.readFileSync(runtimeFilePath, 'utf-8');
 
 export interface ExtensionOptions {
   typescript?: boolean;
@@ -251,13 +243,6 @@ export default (options: Partial<Options> = {}): Plugin => {
   let projectRoot = process.cwd();
   return {
     name: 'solid-js',
-    resolveId(id) {
-      if (id === runtimePublicPath) return id;
-    },
-
-    load(id) {
-      if (id === runtimePublicPath) return runtimeCode;
-    },
     async transform(source, id,) {
       const currentFileExtension = getExtension(id);
 

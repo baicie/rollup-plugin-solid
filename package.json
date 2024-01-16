@@ -25,7 +25,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "pnpm run build --watch",
-    "update-version": "tsx scripts/update-version.ts",
     "publish-script": "tsx scripts/publish-script.ts",
     "cz": "bcz"
   },
@@ -39,7 +38,8 @@
     "solid-js": "^1.8.11",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "write-package": "^7.0.0"
   },
   "packageManager": "pnpm@8.14.0",
   "peerDependencies": {

@@ -1,40 +1,37 @@
-import type { Project } from '@pnpm/find-workspace-packages';
-import { findWorkspacePackages } from '@pnpm/find-workspace-packages';
 import chalk from 'chalk';
-import consola from 'consola';
+import { execSync } from 'node:child_process';
 import process from 'node:process';
-import { rootPath } from './paths';
-import {exec, execSync} from 'node:child_process';
-
-const getWorkspacePackages = () => findWorkspacePackages(rootPath);
+import { updatePackage } from 'write-package';
 
 function errorAndExit(err: Error): void {
-  consola.error(err);
+  console.error(err);
   process.exit(1);
 }
 
 async function main() {
-  consola.debug(chalk.yellow('publish-script started'));
+  const cwd = process.cwd();
+  const version = process.env.TAG_VERSION?.replace('v', '') ?? '0.0.0';
+  const gitHead = process.env.GIT_HEAD;
+  if (!version) {
+    errorAndExit(new Error('No version'));
+  }
 
-  const pkgs = Object.fromEntries((await getWorkspacePackages()).map(pkg => [pkg.manifest.name!, pkg]));
+  console.log(chalk.cyan(`$new version: ${version}`));
+  console.log(chalk.cyan(`$GIT_HEAD: ${gitHead}`));
+  console.debug(chalk.yellow('Updating package.json'));
 
-  const publishPackage = async (project: Project) => {
-    const config:any = project.manifest.config
-    if(config && config.publish && config.publish === true) {
-      execSync('pnpm publish --access public --no-git-checks', {cwd: project.dir, stdio: 'inherit'})
-      return;
-    }
+  const publishPackage = async () => {
+    execSync('pnpm publish --access public --no-git-checks', { cwd, stdio: 'inherit' })
   };
 
   try {
-    for (const [name, project] of Object.entries(pkgs)) {
-      await publishPackage(project);
-    }
+    await updatePackage(cwd, { version })
+    await publishPackage();
   } catch (error) {
     errorAndExit(error as Error);
   }
 
-  consola.success(chalk.green(`packages published successfully`));
+  console.log(chalk.green(`packages published successfully`));
 }
 
 main();
